@@ -41,6 +41,10 @@
   background-color: #f5f5f5;
 }
 
+html body div#app footer.footer.mt-auto.py-3 {
+  margin-top: 10px !important;
+}
+
 .footer > .container {
   padding-right: 15px;
   padding-left: 15px;
