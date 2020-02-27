@@ -1,15 +1,12 @@
 <template>
-  <div class="about">
-    <HelloWorld msg="Amigo"/>
+  <div class="map">
+      <p>Hello</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
+  name: 'Map'
 }
 </script>
 
