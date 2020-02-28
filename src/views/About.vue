@@ -1,14 +1,20 @@
 <template>
   <div class="about">
-    <HelloWorld msg="Amigo"/>
+  <main role="main" class="flex-shrink-0">
+    <div class="container">
+      <AboutInfo/>
+    </div>
+  </main>
   </div>
 </template>
 
 <script>
+import AboutInfo from '@/components/AboutInfo.vue'
+
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  name: 'About',
+  components: {
+    AboutInfo
   }
 }
 </script>

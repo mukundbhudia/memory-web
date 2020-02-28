@@ -7,9 +7,21 @@
 <script>
 // import UserConfig from '../../user.config'
 import L from 'leaflet'
+import { mapState, mapActions } from 'vuex'
+import store from '../store/index'
 
 export default {
   name: 'Map',
+  computed: {
+    ...mapState([
+      'coords'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'userPicksCoords'
+    ])
+  },
   mounted () {
     this.$nextTick(() => {
       const mymap = L.map('mapid').setView([51.505, -0.09], 13)
@@ -30,9 +42,11 @@ export default {
       var popup = L.popup()
 
       function onMapClick (e) {
+        store.dispatch('userPicksCoords', { lat: e.latlng.lat, lng: e.latlng.lng })
         popup
           .setLatLng(e.latlng)
-          .setContent('Clicked at ' + e.latlng.toString())
+          // .setContent('Clicked at ' + e.latlng.toString())
+          .setContent('Pin')
           .openOn(mymap)
       }
 
