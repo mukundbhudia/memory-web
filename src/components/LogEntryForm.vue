@@ -25,6 +25,21 @@
         ></b-form-textarea>
       </b-form-group>
 
+      <b-form-group inline
+        id="input-group-3"
+        label="Your chosen coordinates:"
+      >
+        <b-form inline>
+          <b-input-group prepend="Lng" class="mb-2 mr-sm-2 mb-sm-0">
+            <b-input readonly id="inline-form-input-username" :value="coords.lat"></b-input>
+          </b-input-group>
+
+          <b-input-group prepend="Lng" class="mb-2 mr-sm-2 mb-sm-0">
+            <b-input readonly id="inline-form-input-username" :value="coords.lng"></b-input>
+          </b-input-group>
+        </b-form>
+      </b-form-group>
+
       <b-button type="submit" variant="primary">Submit</b-button>
     </b-form>
 
@@ -35,22 +50,32 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'LogEntryForm',
+  computed: {
+    ...mapState([
+      'coords'
+    ])
+  },
+  methods: {
+    onSubmit (evt) {
+      evt.preventDefault()
+      this.form.position.lat = this.coords.lat
+      this.form.position.lng = this.coords.lng
+      console.log(JSON.stringify(this.form))
+    }
+  },
   data () {
     return {
       form: {
         noteTitle: '',
         note: '',
-        coords: { lng: 0, lat: 0 }
+        timeStamp: new Date(),
+        position: { lat: 0, lng: 0 }
       },
       show: true
-    }
-  },
-  methods: {
-    onSubmit (evt) {
-      evt.preventDefault()
-      console.log(JSON.stringify(this.form))
     }
   }
 }
