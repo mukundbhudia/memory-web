@@ -5,7 +5,6 @@
 </template>
 
 <script>
-// import UserConfig from '../../user.config'
 import L from 'leaflet'
 import { mapState, mapActions } from 'vuex'
 import store from '../store/index'
@@ -36,18 +35,17 @@ export default {
         zoomOffset: -1
       }).addTo(mymap)
 
-      L.marker([51.5, -0.09]).addTo(mymap)
-        .bindPopup('<b>Hello world!</b><br />I am a popup.').openPopup()
-
-      var popup = L.popup()
+      var circle = L.circleMarker([51.5, -0.09], {
+        className: 'pulse'
+      })
 
       function onMapClick (e) {
         store.dispatch('userPicksCoords', { lat: e.latlng.lat, lng: e.latlng.lng })
-        popup
+        circle
+          .addTo(mymap)
           .setLatLng(e.latlng)
-          // .setContent('Clicked at ' + e.latlng.toString())
-          .setContent('Pin')
-          .openOn(mymap)
+          .bindPopup('Here!')
+          .openPopup()
       }
 
       mymap.on('click', onMapClick)
@@ -62,5 +60,24 @@ export default {
 #mapid {
   width: 100%;
   height: 400px;
+}
+
+.pulse {
+  /* animation: pulsate 1s ease-out;
+  -webkit-animation: pulsate 1s ease-out;
+  -webkit-animation-iteration-count: infinite;
+  opacity: 0.0 */
+  animation: pulsate 1s ease-out;
+  -webkit-animation: pulsate 1s ease-out;
+  -webkit-animation-iteration-count: infinite;
+}
+
+@keyframes pulsate {
+  0% {-webkit-transform: scale(0.1, 0.1); opacity: 0.0;}
+  50% {opacity: 1.0;}
+  100% {-webkit-transform: scale(1.2, 1.2); opacity: 0.0;}
+  /* 0% {transform: opacity: 0.0;}
+  50% {opacity: 1.0;}
+  100% {transform: opacity: 0.0;} */
 }
 </style>
