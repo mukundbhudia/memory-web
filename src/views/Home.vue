@@ -3,7 +3,7 @@
   <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
   <main role="main" class="flex-shrink-0">
     <div class="container">
-      <Header msg="Amigo"/>
+      <Header/>
       <Map/>
       <LogEntryForm/>
     </div>

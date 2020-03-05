@@ -42,15 +42,12 @@
 
       <b-button type="submit" variant="primary">Submit</b-button>
     </b-form>
-
-    <!-- <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ form }}</pre>
-    </b-card> -->
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import store from '../store/index'
 
 export default {
   name: 'LogEntryForm',
@@ -64,7 +61,15 @@ export default {
       evt.preventDefault()
       this.form.position.lat = this.coords.lat
       this.form.position.lng = this.coords.lng
-      console.log(JSON.stringify(this.form))
+      this.form.timeStamp = new Date()
+      store.dispatch('userSavesNote', { note: this.form })
+      // console.log(JSON.stringify(this.form))
+      this.form = {
+        noteTitle: '',
+        note: '',
+        timeStamp: null,
+        position: { lat: 0, lng: 0 }
+      }
     }
   },
   data () {
@@ -72,7 +77,7 @@ export default {
       form: {
         noteTitle: '',
         note: '',
-        timeStamp: new Date(),
+        timeStamp: null,
         position: { lat: 0, lng: 0 }
       },
       show: true

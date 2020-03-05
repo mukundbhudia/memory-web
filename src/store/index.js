@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     userName: '',
     coords: { lng: 0, lat: 0 },
-    timeStamp: new Date()
+    notes: []
   },
   getters: {
     getCoords: (state) => {
@@ -15,14 +15,20 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    setCoords (state, payload) {
+    setCoords: (state, payload) => {
       state.coords.lat = payload.lat
       state.coords.lng = payload.lng
+    },
+    saveNote: (state, payload) => {
+      state.notes.push(payload.note)
     }
   },
   actions: {
     userPicksCoords: (context, coords) => {
       context.commit('setCoords', coords)
+    },
+    userSavesNote: (context, note) => {
+      context.commit('saveNote', note)
     }
   },
   modules: {
