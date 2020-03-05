@@ -13,17 +13,19 @@ export default {
   name: 'Map',
   computed: {
     ...mapState([
-      'coords'
+      'coords',
+      'mapZoomLevel'
     ])
   },
   methods: {
     ...mapActions([
-      'userPicksCoords'
+      'userPicksCoords',
+      'userSetsZoom'
     ])
   },
   mounted () {
     this.$nextTick(() => {
-      const mymap = L.map('mapid').setView([51.505, -0.09], 13)
+      const mymap = L.map('mapid').setView([this.coords.lat, this.coords.lng], this.mapZoomLevel)
 
       L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
         maxZoom: 18,
@@ -39,6 +41,15 @@ export default {
         className: 'pulse'
       })
 
+      function debounce (callback, interval) {
+        let debounceTimeoutId
+
+        return function (...args) {
+          clearTimeout(debounceTimeoutId)
+          debounceTimeoutId = setTimeout(() => callback.apply(this, args), interval)
+        }
+      }
+
       function onMapClick (e) {
         store.dispatch('userPicksCoords', { lat: e.latlng.lat, lng: e.latlng.lng })
         circle
@@ -48,7 +59,12 @@ export default {
           .openPopup()
       }
 
+      function onZoomEnd (e) {
+        store.dispatch('userSetsZoom', { mapZoomLevel: e.target._animateToZoom })
+      }
+
       mymap.on('click', onMapClick)
+      mymap.on('zoomend', debounce(onZoomEnd, 2000))
     })
   }
 }

@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     userName: '',
-    coords: { lng: 0, lat: 0 },
+    coords: { lat: 51.505, lng: -0.09 },
+    mapZoomLevel: 13,
     notes: []
   },
   getters: {
@@ -21,6 +22,9 @@ export default new Vuex.Store({
     },
     saveNote: (state, payload) => {
       state.notes.push(payload.note)
+    },
+    setMapZoomLevel: (state, payload) => {
+      state.mapZoomLevel = payload.mapZoomLevel
     }
   },
   actions: {
@@ -29,6 +33,9 @@ export default new Vuex.Store({
     },
     userSavesNote: (context, note) => {
       context.commit('saveNote', note)
+    },
+    userSetsZoom: (context, mapZoomLevel) => {
+      context.commit('setMapZoomLevel', mapZoomLevel)
     }
   },
   modules: {
