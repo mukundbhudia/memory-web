@@ -43,7 +43,7 @@ export default {
     }
   },
   mounted () {
-    const URI = process.env.URI || 'http://localhost:4000'
+    const URI = process.env.VUE_APP_URI || 'http://localhost:4000'
     axios
       .get(`${URI}/`)
       .then(response => {
