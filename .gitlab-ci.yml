@@ -5,6 +5,7 @@ pages: # the job must be named pages
   image: node:latest
   stage: deploy
   script:
+    - export URI=https://memory-api.herokuapp.com
     - npm ci
     - npm run build
     - mv public public-vue # GitLab Pages hooks on the public folder
