@@ -7,13 +7,20 @@
         <router-link class="py-2 d-none d-md-inline-block" to="/">Home</router-link>
         <router-link class="py-2 d-none d-md-inline-block" to="/notes">Notes</router-link>
         <router-link class="py-2 d-none d-md-inline-block" to="/about">About</router-link>
+        <router-link v-if="loggedIn" class="py-2 d-none d-md-inline-block" to="/me">Me</router-link>
+        <router-link v-else class="py-2 d-none d-md-inline-block" to="/login-signup">Login/Sign up</router-link>
       </div>
     </nav>
 </template>
 
 <script>
 export default {
-  name: 'NavBar'
+  name: 'NavBar',
+  data () {
+    return {
+      loggedIn: false
+    }
+  }
 }
 </script>
 
