@@ -4,33 +4,81 @@
       <div class="container">
         <h1 class="mt-5">Login or Sign up</h1>
         <p class="lead">Fill out the details below to log in or sign up to the app.</p>
-        <div class="log-entry-form">
-          <b-form @submit="onSubmit" v-if="show">
-            <b-form-group
-              id="input-group-1"
-              label-for="input-1"
-            >
-              <b-form-input
-                id="input-1"
-                v-model="form.userName"
-                type="email"
-                required
-                placeholder="Email address"
-              ></b-form-input>
-            </b-form-group>
+        <div>
+          <b-tabs content-class="mt-3">
+            <b-tab title="Login" active>
+              <div class="log-entry-form">
+                <b-form @submit="onLoginSubmit" v-if="show">
+                  <b-form-group
+                    id="input-group-1"
+                    label-for="input-1"
+                  >
+                    <b-form-input
+                      id="input-1"
+                      v-model="loginForm.userName"
+                      type="email"
+                      required
+                      placeholder="Email address"
+                    ></b-form-input>
+                  </b-form-group>
 
-            <b-form-group id="input-group-2" label-for="input-2">
-              <b-form-input
-                id="input-2"
-                v-model="form.password"
-                type="password"
-                required
-                placeholder="Password"
-              ></b-form-input>
-            </b-form-group>
+                  <b-form-group id="input-group-2" label-for="input-2">
+                    <b-form-input
+                      id="input-2"
+                      v-model="loginForm.password"
+                      type="password"
+                      required
+                      placeholder="Password"
+                    ></b-form-input>
+                  </b-form-group>
 
-            <b-button type="submit" variant="primary">Submit</b-button>
-          </b-form>
+                  <b-button type="submit" variant="primary">Log in</b-button>
+                </b-form>
+              </div>
+            </b-tab>
+
+            <b-tab title="Sign up">
+              <b-form @submit="onSignUpSubmit" v-if="show">
+               <b-form-group
+                  id="input-group-0"
+                  label-for="input-0"
+                >
+                  <b-form-input
+                    id="input-0"
+                    v-model="signUpForm.fullName"
+                    type="text"
+                    required
+                    placeholder="Your full name here"
+                  ></b-form-input>
+                </b-form-group>
+
+                <b-form-group
+                  id="input-group-1"
+                  label-for="input-1"
+                >
+                  <b-form-input
+                    id="input-1"
+                    v-model="signUpForm.userName"
+                    type="email"
+                    required
+                    placeholder="Email address"
+                  ></b-form-input>
+                </b-form-group>
+
+                <b-form-group id="input-group-2" label-for="input-2">
+                  <b-form-input
+                    id="input-2"
+                    v-model="signUpForm.password"
+                    type="password"
+                    required
+                    placeholder="Password"
+                  ></b-form-input>
+                </b-form-group>
+
+                <b-button type="submit" variant="primary">Sign up</b-button>
+              </b-form>
+            </b-tab>
+          </b-tabs>
         </div>
       </div>
     </main>
@@ -38,6 +86,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
   name: 'LoginSignup',
@@ -45,21 +94,62 @@ export default {
   //   NotesList
   // }
   methods: {
-    onSubmit (evt) {
+    onLoginSubmit (evt) {
       evt.preventDefault()
-      this.form.timeStamp = new Date()
+      this.loginForm.timeStamp = new Date()
       // store.dispatch('userSavesNote', { note: this.form })
-      console.log(JSON.stringify(this.form))
-      this.form = {
-        noteTitle: '',
-        note: '',
+      console.log(JSON.stringify(this.loginForm))
+      this.loginForm = {
+        userName: '',
+        password: '',
+        timeStamp: null
+      }
+    },
+    postSignUp (data) {
+      console.log(data)
+      const URI = process.env.VUE_APP_URI || 'http://localhost:4000'
+      axios
+        .post(`${URI}/signup`, data)
+        .then(response => {
+          console.log(response.data.msg)
+          // this.info = response.data.msg
+        })
+        .catch(error => {
+          console.log(error)
+          // this.errored = true
+        })
+        .finally(() => {
+          // this.loading = false
+        })
+    },
+    onSignUpSubmit (evt) {
+      evt.preventDefault()
+      this.signUpForm.timeStamp = new Date()
+      // store.dispatch('userSavesNote', { note: this.form })
+      console.log(JSON.stringify(this.signUpForm))
+      this.postSignUp({
+        fullName: this.signUpForm.fullName,
+        userName: this.signUpForm.userName,
+        password: this.signUpForm.password,
+        timeStamp: this.signUpForm.timeStamp
+      })
+      this.signUpForm = {
+        fullName: '',
+        userName: '',
+        password: '',
         timeStamp: null
       }
     }
   },
   data () {
     return {
-      form: {
+      loginForm: {
+        userName: '',
+        password: '',
+        timeStamp: null
+      },
+      signUpForm: {
+        fullName: '',
         userName: '',
         password: '',
         timeStamp: null
