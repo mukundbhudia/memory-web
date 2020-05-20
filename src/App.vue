@@ -12,14 +12,18 @@
     </nav>
 
     <router-view/>
-
-    <footer class="footer mt-auto py-3">
-      <div class="container">
-        <span class="text-muted">memo.ry</span>
-      </div>
-    </footer>
+    <Footer/>
   </div>
 </template>
+
+<script>
+import Footer from '@/components/Footer.vue'
+export default {
+  components: {
+    Footer
+  }
+}
+</script>
 
 <style>
 .container {
@@ -40,24 +44,15 @@
   text-decoration: none;
 }
 
-.footer {
-  background-color: #f5f5f5;
-}
-
 html body div#app footer.footer.mt-auto.py-3 {
   margin-top: 10px !important;
-}
-
-.footer > .container {
-  padding-right: 15px;
-  padding-left: 15px;
 }
 
 /*
  * Extra utilities
  */
 
-/* .flex-equal > * {
+.flex-equal > * {
   -ms-flex: 1;
   flex: 1;
 }
@@ -68,5 +63,5 @@ html body div#app footer.footer.mt-auto.py-3 {
   }
 }
 
-.overflow-hidden { overflow: hidden; } */
+.overflow-hidden { overflow: hidden; }
 </style>
