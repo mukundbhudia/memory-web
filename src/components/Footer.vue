@@ -14,6 +14,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+html body div#app footer.footer.mt-auto.py-3 {
+  margin-top: 10px !important;
+}
+
 .footer {
   background-color: #f5f5f5;
 }
