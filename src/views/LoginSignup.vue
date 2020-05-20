@@ -99,28 +99,15 @@ export default {
       this.loginForm.timeStamp = new Date()
       // store.dispatch('userSavesNote', { note: this.form })
       console.log(JSON.stringify(this.loginForm))
+      this.postLogin({
+        userName: this.loginForm.userName,
+        password: this.loginForm.password
+      })
       this.loginForm = {
         userName: '',
         password: '',
         timeStamp: null
       }
-    },
-    postSignUp (data) {
-      console.log(data)
-      const URI = process.env.VUE_APP_URI || 'http://localhost:4000'
-      axios
-        .post(`${URI}/signup`, data)
-        .then(response => {
-          console.log(response.data.msg)
-          // this.info = response.data.msg
-        })
-        .catch(error => {
-          console.log(error)
-          // this.errored = true
-        })
-        .finally(() => {
-          // this.loading = false
-        })
     },
     onSignUpSubmit (evt) {
       evt.preventDefault()
@@ -139,10 +126,41 @@ export default {
         password: '',
         timeStamp: null
       }
+    },
+    postLogin (data) {
+      axios
+        .post(`${this.URI}/login`, data)
+        .then(response => {
+          console.log(response.data.msg)
+          // this.info = response.data.msg
+        })
+        .catch(error => {
+          console.log(error)
+          // this.errored = true
+        })
+        .finally(() => {
+          // this.loading = false
+        })
+    },
+    postSignUp (data) {
+      axios
+        .post(`${this.URI}/signup`, data)
+        .then(response => {
+          console.log(response.data.msg)
+          // this.info = response.data.msg
+        })
+        .catch(error => {
+          console.log(error)
+          // this.errored = true
+        })
+        .finally(() => {
+          // this.loading = false
+        })
     }
   },
   data () {
     return {
+      URI: process.env.VUE_APP_URI || 'http://localhost:4000',
       loginForm: {
         userName: '',
         password: '',
