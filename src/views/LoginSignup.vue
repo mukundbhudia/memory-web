@@ -86,7 +86,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import axios from 'axios'
+import store from '../store'
 
 export default {
   name: 'LoginSignup',
@@ -131,7 +133,8 @@ export default {
       axios
         .post(`${this.URI}/login`, data)
         .then(response => {
-          console.log(response.data.msg)
+          console.log(response.data)
+          store.dispatch('storeAuthToken', { authToken: response.data.token })
           // this.info = response.data.msg
         })
         .catch(error => {
@@ -156,7 +159,10 @@ export default {
         .finally(() => {
           // this.loading = false
         })
-    }
+    },
+    ...mapActions([
+      'storeAuthToken'
+    ])
   },
   data () {
     return {

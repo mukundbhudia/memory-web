@@ -8,11 +8,15 @@ export default new Vuex.Store({
     userName: '',
     coords: { lat: 51.505, lng: -0.09 },
     mapZoomLevel: 13,
-    notes: []
+    notes: [],
+    authToken: ''
   },
   getters: {
     getCoords: (state) => {
       return state.coords
+    },
+    getAuthToken: (state) => {
+      return state.authToken
     }
   },
   mutations: {
@@ -25,6 +29,9 @@ export default new Vuex.Store({
     },
     setMapZoomLevel: (state, payload) => {
       state.mapZoomLevel = payload.mapZoomLevel
+    },
+    setAuthToken: (state, payload) => {
+      state.authToken = payload.authToken
     }
   },
   actions: {
@@ -36,6 +43,9 @@ export default new Vuex.Store({
     },
     userSetsZoom: (context, mapZoomLevel) => {
       context.commit('setMapZoomLevel', mapZoomLevel)
+    },
+    storeAuthToken: (context, authToken) => {
+      context.commit('setAuthToken', authToken)
     }
   },
   modules: {
