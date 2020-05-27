@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import axios from 'axios'
 
 export default {
@@ -29,9 +28,9 @@ export default {
     // TODO
   },
   computed: {
-    ...mapState([
-      'authToken'
-    ])
+    getAuthToken () {
+      return this.$store.getters.getAuthToken
+    }
   },
   data () {
     return {
@@ -43,12 +42,12 @@ export default {
   },
   mounted () {
     axios
-      .get(`${this.URI}/me`, { headers: { Authorization: `Basic ${this.authToken}` } })
+      .get(`${this.URI}/me`, { headers: { Authorization: `Basic ${this.getAuthToken}` } })
       .then(response => {
         this.info = response.data.msg
       })
       .catch(error => {
-        console.log(error)
+        console.error(error)
         this.errored = true
       })
       .finally(() => { this.loading = false })

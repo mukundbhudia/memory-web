@@ -14,12 +14,14 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'NavBar',
-  data () {
-    return {
-      loggedIn: false
-    }
+  computed: {
+    ...mapState([
+      'loggedIn'
+    ])
   }
 }
 </script>

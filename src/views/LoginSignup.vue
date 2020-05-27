@@ -96,6 +96,11 @@ export default {
   //   NotesList
   // }
   methods: {
+    ...mapActions([
+      'storeAuthToken',
+      'setLoggedIn',
+      'persistUser'
+    ]),
     onLoginSubmit (evt) {
       evt.preventDefault()
       this.loginForm.timeStamp = new Date()
@@ -135,6 +140,7 @@ export default {
         .then(response => {
           console.log(response.data)
           store.dispatch('storeAuthToken', { authToken: response.data.token })
+          store.dispatch('setLoggedIn', { loggedIn: true })
           // this.info = response.data.msg
         })
         .catch(error => {
@@ -159,10 +165,7 @@ export default {
         .finally(() => {
           // this.loading = false
         })
-    },
-    ...mapActions([
-      'storeAuthToken'
-    ])
+    }
   },
   data () {
     return {
