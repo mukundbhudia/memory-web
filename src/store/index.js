@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user: { userId: '', userName: '' },
+    user: { id: '', userName: '', fullName: '' },
     loggedIn: false,
     coords: { lat: 51.505, lng: -0.09 },
     mapZoomLevel: 13,
@@ -23,14 +23,24 @@ export default new Vuex.Store({
       } else if (localAuthToken !== null) {
         state.authToken = localAuthToken
       }
-
       return state.authToken
+    },
+    getUser: (state) => {
+      const localUser = localStorage.getItem('user')
+      if (localUser === null) {
+        localStorage.setItem('user', JSON.stringify(state.user))
+      } else if (localUser !== null) {
+        state.user = JSON.parse(localUser)
+      }
+      return state.user
     }
   },
   mutations: {
     setUser: (state, payload) => {
-      state.user.userId = payload.userId
+      state.user.id = payload.id
       state.user.userName = payload.userName
+      state.user.fullName = payload.fullName
+      localStorage.setItem('user', JSON.stringify(state.user))
     },
     setLoggedIn: (state, payload) => {
       state.loggedIn = payload.loggedIn

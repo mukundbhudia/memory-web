@@ -2,16 +2,16 @@
   <div class="me">
   <main role="main" class="flex-shrink-0">
     <div class="container">
-      <h1 class="mt-5">Me</h1>
+      <h1 class="mt-5">{{ getUser.fullName || `Me` }}</h1>
       <p class="lead">My page.</p>
       <section v-if="errored">
-        <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
+        <p>Please <a href="#/login-signup">login or sign up</a> to see your details.</p>
       </section>
 
       <section v-else>
         <div v-if="loading">Loading...</div>
         <div v-else>
-          API says: {{ info }}
+          Welcome {{ getUser.fullName }}.
         </div>
       </section>
     </div>
@@ -30,6 +30,9 @@ export default {
   computed: {
     getAuthToken () {
       return this.$store.getters.getAuthToken
+    },
+    getUser () {
+      return this.$store.getters.getUser
     }
   },
   data () {

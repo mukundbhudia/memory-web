@@ -104,8 +104,6 @@ export default {
     onLoginSubmit (evt) {
       evt.preventDefault()
       this.loginForm.timeStamp = new Date()
-      // store.dispatch('userSavesNote', { note: this.form })
-      console.log(JSON.stringify(this.loginForm))
       this.postLogin({
         userName: this.loginForm.userName,
         password: this.loginForm.password
@@ -138,10 +136,10 @@ export default {
       axios
         .post(`${this.URI}/login`, data)
         .then(response => {
-          console.log(response.data)
           store.dispatch('storeAuthToken', { authToken: response.data.token })
+          store.dispatch('persistUser', response.data.user)
           store.dispatch('setLoggedIn', { loggedIn: true })
-          // this.info = response.data.msg
+          window.location.href = '/#/me'
         })
         .catch(error => {
           console.log(error)
