@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand href="#/">Memory</b-navbar-brand>
+      <b-navbar-brand href="/">Memory</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -20,7 +20,7 @@
               <em>{{ getUser.fullName }}</em>
             </template>
             <b-dropdown-item href="#/me">My profile</b-dropdown-item>
-            <b-dropdown-item href="#/logout">Sign Out</b-dropdown-item>
+            <b-dropdown-item href="#/logout">Log Out</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item v-else href="#/login-signup">Login/Sign up</b-nav-item>
         </b-navbar-nav>
