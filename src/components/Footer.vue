@@ -1,14 +1,49 @@
 <template>
   <footer class="footer mt-auto py-3">
-    <div class="container">
+    <div class="container pull-left">
       <span class="text-muted">memo.ry</span>
+    </div>
+    <div class="container pull-right">
+      <span class="text-muted" v-if="errored">API: <b-icon-exclamation-circle></b-icon-exclamation-circle></span>
+      <div v-else>
+        <span class="text-muted" v-if="loading">API: <b-icon-clock></b-icon-clock></span>
+        <span class="text-muted" v-else>API: <b-icon-check-circle></b-icon-check-circle></span>
+      </div>
     </div>
   </footer>
 </template>
 
 <script>
+import { BIconClock, BIconCheckCircle, BIconExclamationCircle } from 'bootstrap-vue'
+import axios from 'axios'
+
 export default {
-  name: 'Footer'
+  name: 'Footer',
+  components: {
+    BIconClock,
+    BIconCheckCircle,
+    BIconExclamationCircle
+  },
+  data () {
+    return {
+      info: null,
+      loading: true,
+      errored: false
+    }
+  },
+  mounted () {
+    const URI = process.env.VUE_APP_URI || 'http://localhost:4000'
+    axios
+      .get(`${URI}/`)
+      .then(response => {
+        this.info = response.data.msg
+      })
+      .catch(error => {
+        console.log(error)
+        this.errored = true
+      })
+      .finally(() => { this.loading = false })
+  }
 }
 </script>
 
