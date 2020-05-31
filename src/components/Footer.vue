@@ -1,7 +1,7 @@
 <template>
   <footer class="footer mt-auto py-3">
     <div class="container pull-left">
-      <span class="text-muted">memo.ry</span>
+      <span class="text-muted">Memory</span>
     </div>
     <div class="container pull-right">
       <span class="text-muted" v-if="errored">API: <b-icon-exclamation-circle></b-icon-exclamation-circle></span>
