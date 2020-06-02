@@ -23,6 +23,7 @@
 <script>
 import { mapActions } from 'vuex'
 import axios from 'axios'
+import store from '../store'
 
 export default {
   name: 'Logout',
@@ -31,10 +32,12 @@ export default {
   },
   methods: {
     ...mapActions([
-      'logout'
+      'logoutUser'
     ]),
     logout () {
       console.log('logging out...')
+      store.dispatch('logoutUser')
+      window.location.href = '#/'
     },
     cancelLogout () {
       window.history.back()
@@ -62,8 +65,13 @@ export default {
       .then(response => {
         this.info = response.data.msg
       })
-      .catch(error => {
-        console.error(error)
+      .catch((error, data) => {
+        if (error.response.data.msg && error.response.data.msg === 'Auth token inavalid' && error.response.status === 403) {
+          console.log('Token expired, logging out...')
+          store.dispatch('logoutUser')
+        } else {
+          console.error(error)
+        }
         this.errored = true
       })
       .finally(() => { this.loading = false })

@@ -21,11 +21,18 @@
 
 <script>
 import axios from 'axios'
+import { mapActions } from 'vuex'
+import store from '../store'
 
 export default {
   name: 'Me',
   components: {
     // TODO
+  },
+  methods: {
+    ...mapActions([
+      'logoutUser'
+    ])
   },
   computed: {
     getAuthToken () {
@@ -49,8 +56,13 @@ export default {
       .then(response => {
         this.info = response.data.msg
       })
-      .catch(error => {
-        console.error(error)
+      .catch((error, data) => {
+        if (error.response.data.msg && error.response.data.msg === 'Auth token inavalid' && error.response.status === 403) {
+          console.log('Token expired, logging out...')
+          store.dispatch('logoutUser')
+        } else {
+          console.error(error)
+        }
         this.errored = true
       })
       .finally(() => { this.loading = false })

@@ -3,9 +3,11 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+const emptyUserObject = { id: '', userName: '', fullName: '' }
+
 export default new Vuex.Store({
   state: {
-    user: { id: '', userName: '', fullName: '' },
+    user: emptyUserObject,
     loggedIn: false,
     coords: { lat: 51.505, lng: -0.09 },
     mapZoomLevel: 13,
@@ -29,7 +31,7 @@ export default new Vuex.Store({
       const localUser = localStorage.getItem('user')
       if (localUser === null) {
         localStorage.setItem('user', JSON.stringify(state.user))
-      } else if (localUser !== null) {
+      } else if (localUser !== null && localUser !== '') {
         state.user = JSON.parse(localUser)
       }
       return state.user
@@ -44,6 +46,12 @@ export default new Vuex.Store({
     },
     setLoggedIn: (state, payload) => {
       state.loggedIn = payload.loggedIn
+    },
+    logoutUser: (state, payload) => {
+      state.user = emptyUserObject
+      state.authToken = ''
+      localStorage.setItem('authToken', '')
+      localStorage.setItem('user', '')
     },
     setCoords: (state, payload) => {
       state.coords.lat = payload.lat
@@ -66,6 +74,9 @@ export default new Vuex.Store({
     },
     setLoggedIn: (context, loggedIn) => {
       context.commit('setLoggedIn', loggedIn)
+    },
+    logoutUser: (context) => {
+      context.commit('logoutUser')
     },
     userPicksCoords: (context, coords) => {
       context.commit('setCoords', coords)
