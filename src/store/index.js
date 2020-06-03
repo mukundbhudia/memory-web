@@ -7,6 +7,7 @@ const emptyUserObject = { id: '', userName: '', fullName: '' }
 
 export default new Vuex.Store({
   state: {
+    apiEndpoint: process.env.VUE_APP_URI || 'http://localhost:4000',
     user: emptyUserObject,
     loggedIn: false,
     coords: { lat: 51.505, lng: -0.09 },
@@ -48,7 +49,9 @@ export default new Vuex.Store({
       state.loggedIn = payload.loggedIn
     },
     logoutUser: (state, payload) => {
-      state.user = emptyUserObject
+      state.user.id = ''
+      state.user.userName = ''
+      state.user.fullName = ''
       state.authToken = ''
       localStorage.setItem('authToken', '')
       localStorage.setItem('user', '')
