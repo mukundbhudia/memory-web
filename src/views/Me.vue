@@ -4,12 +4,12 @@
     <div class="container">
       <h1 class="mt-5">{{ getUser.fullName || `Me` }}</h1>
       <p class="lead">My page.</p>
-      <section v-if="errored">
+      <section v-if="authStatus.errored">
         <p>Please <a href="#/login-signup">login or sign up</a> to see your details.</p>
       </section>
 
       <section v-else>
-        <div v-if="loading">Loading...</div>
+        <div v-if="authStatus.loading">Loading...</div>
         <div v-else>
           Welcome {{ getUser.fullName }}.
         </div>
@@ -20,9 +20,8 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { mapActions } from 'vuex'
-import store from '../store'
+import auth from '../auth'
 
 export default {
   name: 'Me',
@@ -44,27 +43,15 @@ export default {
   },
   data () {
     return {
-      info: null,
-      loading: true,
-      errored: false
+      authStatus: {
+        info: null,
+        loading: true,
+        errored: false
+      }
     }
   },
   mounted () {
-    axios
-      .get(`${this.$store.state.apiEndpoint}/me`, { headers: { Authorization: `Basic ${this.getAuthToken}` } })
-      .then(response => {
-        this.info = response.data.msg
-      })
-      .catch((error, data) => {
-        if (error.response.data.msg && error.response.data.msg === 'Auth token inavalid' && error.response.status === 403) {
-          console.log('Token expired, logging out...')
-          store.dispatch('logoutUser')
-        } else {
-          console.error(error)
-        }
-        this.errored = true
-      })
-      .finally(() => { this.loading = false })
+    this.authStatus = auth.authenticate()
   }
 }
 </script>
