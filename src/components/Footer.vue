@@ -32,9 +32,8 @@ export default {
     }
   },
   mounted () {
-    const URI = process.env.VUE_APP_URI || 'http://localhost:4000'
     axios
-      .get(`${URI}/`)
+      .get(`${this.$store.state.apiEndpoint}/`)
       .then(response => {
         this.info = response.data.msg
       })

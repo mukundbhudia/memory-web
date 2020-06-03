@@ -167,7 +167,7 @@ export default {
   },
   data () {
     return {
-      URI: process.env.VUE_APP_URI || 'http://localhost:4000',
+      URI: this.$store.state.apiEndpoint,
       loginForm: {
         userName: '',
         password: '',

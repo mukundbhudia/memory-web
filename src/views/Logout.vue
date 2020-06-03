@@ -53,7 +53,6 @@ export default {
   },
   data () {
     return {
-      URI: process.env.VUE_APP_URI || 'http://localhost:4000',
       info: null,
       loading: true,
       errored: false
@@ -61,7 +60,7 @@ export default {
   },
   mounted () {
     axios
-      .get(`${this.URI}/me`, { headers: { Authorization: `Basic ${this.getAuthToken}` } })
+      .get(`${this.$store.state.apiEndpoint}/me`, { headers: { Authorization: `Basic ${this.getAuthToken}` } })
       .then(response => {
         this.info = response.data.msg
       })
