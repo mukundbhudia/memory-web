@@ -2,7 +2,7 @@
   <div class="me">
   <main role="main" class="flex-shrink-0">
     <div class="container">
-      <h1 class="mt-5">{{ getUser.fullName || `Me` }}</h1>
+      <h1 class="mt-5">{{ `Welcome ${getUser.firstName}` || `Me` }}</h1>
       <p class="lead">My page.</p>
       <section v-if="authStatus.errored">
         <p>Please <a href="#/login-signup">login or sign up</a> to see your details.</p>

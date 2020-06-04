@@ -128,6 +128,7 @@ export default {
     ]),
     onLoginSubmit (evt) {
       evt.preventDefault()
+      this.showWarn = false
       this.loginForm.timeStamp = new Date()
       this.postLogin({
         userName: this.loginForm.userName,
@@ -141,6 +142,7 @@ export default {
     },
     onSignUpSubmit (evt) {
       evt.preventDefault()
+      this.showWarn = false
       this.signUpForm.timeStamp = new Date()
       // console.log(JSON.stringify(this.signUpForm))
       this.postSignUp({

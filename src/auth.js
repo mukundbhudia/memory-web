@@ -31,6 +31,7 @@ export default {
           error.response.status === 401
         ) {
           console.log('No auth token, need user to login')
+          store.dispatch('logoutUser')
         } else {
           console.error(error)
         }
