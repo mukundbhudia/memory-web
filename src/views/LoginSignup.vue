@@ -2,6 +2,18 @@
   <div class="notes">
     <main role="main" class="flex-shrink-0">
       <div class="container">
+
+        <b-alert
+          class="mt-5"
+          variant="danger"
+          dismissible
+          fade
+          :show="showIncorrectPasswordWarn"
+          @dismissed="showIncorrectPasswordWarn=false"
+        >
+          The email address and/or password you entered was incorrect, please try again.
+        </b-alert>
+
         <h1 class="mt-5">Login or Sign up</h1>
         <p class="lead">Fill out the details below to log in or sign up to the app.</p>
         <div>
@@ -136,10 +148,15 @@ export default {
       axios
         .post(`${this.URI}/login`, data)
         .then(response => {
-          store.dispatch('storeAuthToken', { authToken: response.data.token })
-          store.dispatch('persistUser', response.data.user)
-          store.dispatch('setLoggedIn', { loggedIn: true })
-          window.location.href = '/#/me'
+          if (response.data.msg && response.data.msg === 'loggedIn') {
+            store.dispatch('storeAuthToken', { authToken: response.data.token })
+            store.dispatch('persistUser', response.data.user)
+            store.dispatch('setLoggedIn', { loggedIn: true })
+            window.location.href = '/#/me'
+          } else if (response.data.msg && response.data.msg === 'userOrPasswordIncorrect') {
+            this.showIncorrectPasswordWarn = true
+            window.location.href = `/#/login-signup?error=${response.message}`
+          }
         })
         .catch(error => {
           console.log(error)
@@ -167,6 +184,7 @@ export default {
   },
   data () {
     return {
+      showIncorrectPasswordWarn: false,
       URI: this.$store.state.apiEndpoint,
       loginForm: {
         userName: '',
