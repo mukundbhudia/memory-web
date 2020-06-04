@@ -3,7 +3,13 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-const emptyUserObject = { id: '', userName: '', fullName: '' }
+const emptyUserObject = {
+  id: '',
+  userName: '',
+  firstName: '',
+  lastName: '',
+  fullName: ''
+}
 
 export default new Vuex.Store({
   state: {
@@ -42,7 +48,9 @@ export default new Vuex.Store({
     setUser: (state, payload) => {
       state.user.id = payload.id
       state.user.userName = payload.userName
-      state.user.fullName = payload.fullName
+      state.user.firstName = payload.firstName
+      state.user.lastName = payload.lastName
+      state.user.fullName = `${state.user.firstName} ${state.user.lastName}`
       localStorage.setItem('user', JSON.stringify(state.user))
     },
     setLoggedIn: (state, payload) => {
@@ -51,6 +59,8 @@ export default new Vuex.Store({
     logoutUser: (state, payload) => {
       state.user.id = ''
       state.user.userName = ''
+      state.user.firstName = ''
+      state.user.lastName = ''
       state.user.fullName = ''
       state.authToken = ''
       localStorage.setItem('authToken', '')

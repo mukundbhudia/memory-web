@@ -8,10 +8,10 @@
           variant="danger"
           dismissible
           fade
-          :show="showIncorrectPasswordWarn"
-          @dismissed="showIncorrectPasswordWarn=false"
+          :show="showWarn"
+          @dismissed="showWarn=false"
         >
-          The email address and/or password you entered was incorrect, please try again.
+          {{ warningMessage }}
         </b-alert>
 
         <h1 class="mt-5">Login or Sign up</h1>
@@ -57,19 +57,32 @@
                 >
                   <b-form-input
                     id="input-0"
-                    v-model="signUpForm.fullName"
+                    v-model="signUpForm.firstName"
                     type="text"
                     required
-                    placeholder="Your full name here"
+                    placeholder="Your first name here"
                   ></b-form-input>
                 </b-form-group>
 
-                <b-form-group
+               <b-form-group
                   id="input-group-1"
                   label-for="input-1"
                 >
                   <b-form-input
                     id="input-1"
+                    v-model="signUpForm.lastName"
+                    type="text"
+                    required
+                    placeholder="Your last name here"
+                  ></b-form-input>
+                </b-form-group>
+
+                <b-form-group
+                  id="input-group-2"
+                  label-for="input-2"
+                >
+                  <b-form-input
+                    id="input-2"
                     v-model="signUpForm.userName"
                     type="email"
                     required
@@ -77,9 +90,9 @@
                   ></b-form-input>
                 </b-form-group>
 
-                <b-form-group id="input-group-2" label-for="input-2">
+                <b-form-group id="input-group-3" label-for="input-3">
                   <b-form-input
-                    id="input-2"
+                    id="input-3"
                     v-model="signUpForm.password"
                     type="password"
                     required
@@ -129,16 +142,17 @@ export default {
     onSignUpSubmit (evt) {
       evt.preventDefault()
       this.signUpForm.timeStamp = new Date()
-      // store.dispatch('userSavesNote', { note: this.form })
-      console.log(JSON.stringify(this.signUpForm))
+      // console.log(JSON.stringify(this.signUpForm))
       this.postSignUp({
-        fullName: this.signUpForm.fullName,
+        firstName: this.signUpForm.firstName,
+        lastName: this.signUpForm.lastName,
         userName: this.signUpForm.userName,
         password: this.signUpForm.password,
         timeStamp: this.signUpForm.timeStamp
       })
       this.signUpForm = {
-        fullName: '',
+        firstName: '',
+        lastName: '',
         userName: '',
         password: '',
         timeStamp: null
@@ -154,12 +168,13 @@ export default {
             store.dispatch('setLoggedIn', { loggedIn: true })
             window.location.href = '/#/me'
           } else if (response.data.msg && response.data.msg === 'userOrPasswordIncorrect') {
-            this.showIncorrectPasswordWarn = true
-            window.location.href = `/#/login-signup?error=${response.message}`
+            this.warningMessage = 'The email address and/or password you entered was incorrect, please try again.'
+            this.showWarn = true
+            window.location.href = `/#/login-signup?error=${response.data.msg}`
           }
         })
         .catch(error => {
-          console.log(error)
+          console.error(error)
           // this.errored = true
         })
         .finally(() => {
@@ -170,11 +185,19 @@ export default {
       axios
         .post(`${this.URI}/signup`, data)
         .then(response => {
-          console.log(response.data.msg)
-          // this.info = response.data.msg
+          if (response.data.msg && response.data.msg === 'userRegistered') {
+            store.dispatch('storeAuthToken', { authToken: response.data.token })
+            store.dispatch('persistUser', response.data.userData)
+            store.dispatch('setLoggedIn', { loggedIn: true })
+            window.location.href = '/#/me?registered=true'
+          } else if (response.data.msg && response.data.msg === 'userAlreadyExists') {
+            this.warningMessage = `A user with ${data.userName} cannot be registered, please try again with a different user name.`
+            this.showWarn = true
+            window.location.href = `/#/login-signup?error=${response.data.msg}`
+          }
         })
         .catch(error => {
-          console.log(error)
+          console.error(error)
           // this.errored = true
         })
         .finally(() => {
@@ -184,7 +207,8 @@ export default {
   },
   data () {
     return {
-      showIncorrectPasswordWarn: false,
+      showWarn: false,
+      warningMessage: '',
       URI: this.$store.state.apiEndpoint,
       loginForm: {
         userName: '',
