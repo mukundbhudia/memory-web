@@ -168,11 +168,11 @@ export default {
             store.dispatch('storeAuthToken', { authToken: response.data.token })
             store.dispatch('persistUser', response.data.user)
             store.dispatch('setLoggedIn', { loggedIn: true })
-            window.location.href = '/#/me'
+            this.$router.push({ path: '/me' })
           } else if (response.data.msg && response.data.msg === 'userOrPasswordIncorrect') {
             this.warningMessage = 'The email address and/or password you entered was incorrect, please try again.'
             this.showWarn = true
-            window.location.href = `/#/login-signup?error=${response.data.msg}`
+            this.$router.push({ path: '/login-signup', query: { error: response.data.msg } })
           }
         })
         .catch(error => {
@@ -191,11 +191,11 @@ export default {
             store.dispatch('storeAuthToken', { authToken: response.data.token })
             store.dispatch('persistUser', response.data.userData)
             store.dispatch('setLoggedIn', { loggedIn: true })
-            window.location.href = '/#/me?registered=true'
+            this.$router.push({ path: '/me', query: { registered: 'true' } })
           } else if (response.data.msg && response.data.msg === 'userAlreadyExists') {
             this.warningMessage = `A user with ${data.userName} cannot be registered, please try again with a different user name.`
             this.showWarn = true
-            window.location.href = `/#/login-signup?error=${response.data.msg}`
+            this.$router.push({ path: '/login-signup', query: { error: response.data.msg } })
           }
         })
         .catch(error => {

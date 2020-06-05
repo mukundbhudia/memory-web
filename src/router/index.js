@@ -51,7 +51,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Logout.vue')
   }
 ]
-// loggin-signup
+
 const router = new VueRouter({
   routes
 })

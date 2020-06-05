@@ -37,7 +37,7 @@ export default {
     logout () {
       console.log('logging out...')
       store.dispatch('logoutUser')
-      window.location.href = '#/'
+      this.$router.push({ path: '/', query: { loggout: 'true' } })
     },
     cancelLogout () {
       window.history.back()
