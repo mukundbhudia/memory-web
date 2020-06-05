@@ -63,7 +63,6 @@ export default {
       this.form.position.lng = this.coords.lng
       this.form.timeStamp = new Date()
       store.dispatch('userSavesNote', { note: this.form })
-      // console.log(JSON.stringify(this.form))
       this.form = {
         noteTitle: '',
         note: '',

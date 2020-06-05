@@ -144,7 +144,6 @@ export default {
       evt.preventDefault()
       this.showWarn = false
       this.signUpForm.timeStamp = new Date()
-      // console.log(JSON.stringify(this.signUpForm))
       this.postSignUp({
         firstName: this.signUpForm.firstName,
         lastName: this.signUpForm.lastName,

@@ -38,7 +38,7 @@ export default {
         this.info = response.data.msg
       })
       .catch(error => {
-        console.log(error)
+        console.error(error)
         this.errored = true
       })
       .finally(() => { this.loading = false })

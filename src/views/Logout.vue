@@ -35,7 +35,7 @@ export default {
       'logoutUser'
     ]),
     logout () {
-      console.log('logging out...')
+      console.debug('logging out...')
       store.dispatch('logoutUser')
       this.$router.push({ path: '/', query: { loggout: 'true' } })
     },

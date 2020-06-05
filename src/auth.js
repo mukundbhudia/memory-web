@@ -23,14 +23,14 @@ export default {
           error.response.data.msg === 'Auth token inavalid' &&
           error.response.status === 403
         ) {
-          console.log('Token expired, logging out...')
+          console.debug('Token expired, logging out...')
           store.dispatch('logoutUser')
         } else if (error.response &&
           error.response.data &&
           error.response.data === 'Unauthorized' &&
           error.response.status === 401
         ) {
-          console.log('No auth token, need user to login')
+          console.debug('No auth token, need user to login')
           store.dispatch('logoutUser')
         } else {
           console.error(error)
