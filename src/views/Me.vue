@@ -5,7 +5,7 @@
       <h1 class="mt-5">{{ `Welcome ${getUser.firstName}` || `Me` }}</h1>
       <p class="lead">My page.</p>
       <section v-if="authStatus.errored">
-        <p>Please <a href="#/login-signup">login or sign up</a> to see your details.</p>
+        <p>Please <router-link to="/login-signup">login or sign up</router-link> to see your details.</p>
       </section>
 
       <section v-else>

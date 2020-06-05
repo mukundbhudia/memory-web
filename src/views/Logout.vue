@@ -5,7 +5,7 @@
       <h1 class="mt-5">Logout?</h1>
       <p class="lead">Are you sure you want to log out {{ getUser.fullName || `Me` }}?</p>
       <section v-if="authStatus.errored">
-        <p>Please <a href="#/login-signup">login or sign up</a> to see your details.</p>
+        <p>Please <router-link to="/login-signup">login or sign up</router-link> to see your details.</p>
       </section>
 
       <section v-else>
@@ -40,7 +40,7 @@ export default {
       this.$router.push({ path: '/', query: { loggout: 'true' } })
     },
     cancelLogout () {
-      window.history.back()
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
     }
   },
   computed: {

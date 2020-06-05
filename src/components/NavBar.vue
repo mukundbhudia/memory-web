@@ -7,9 +7,9 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item href="#/">Home</b-nav-item>
-          <b-nav-item href="#/notes">Notes</b-nav-item>
-          <b-nav-item href="#/about">About</b-nav-item>
+          <router-link to="/" tag="b-nav-item">Home</router-link>
+          <router-link to="/notes" tag="b-nav-item">Notes</router-link>
+          <router-link to="/about" tag="b-nav-item">About</router-link>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -19,10 +19,10 @@
             <template v-slot:button-content>
               <em>{{ getUser.fullName }}</em>
             </template>
-            <b-dropdown-item href="#/me">My profile</b-dropdown-item>
-            <b-dropdown-item href="#/logout">Log Out</b-dropdown-item>
+            <router-link to="/me" tag="b-dropdown-item">My profile</router-link>
+            <router-link to="/logout" tag="b-dropdown-item">Log out</router-link>
           </b-nav-item-dropdown>
-          <b-nav-item v-else href="#/login-signup">Login/Sign up</b-nav-item>
+          <router-link v-else to="/login-signup" tag="b-nav-item">Login/Sign up</router-link>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
