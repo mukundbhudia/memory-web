@@ -20,7 +20,7 @@
           <b-tabs content-class="mt-3">
             <b-tab title="Login" active>
               <div class="log-entry-form">
-                <b-form @submit="onLoginSubmit" v-if="show">
+                <b-form @submit="onLoginSubmit">
                   <b-form-group
                     id="input-group-1"
                     label-for="input-1"
@@ -31,6 +31,7 @@
                       type="email"
                       required
                       placeholder="Email address"
+                      :disabled="loginSubmitted"
                     ></b-form-input>
                   </b-form-group>
 
@@ -41,16 +42,22 @@
                       type="password"
                       required
                       placeholder="Password"
+                      :disabled="loginSubmitted"
                     ></b-form-input>
                   </b-form-group>
 
-                  <b-button type="submit" variant="primary">Log in</b-button>
+                  <b-button
+                    type="submit"
+                    variant="primary"
+                    :disabled="loginSubmitted"
+                  >{{ this.loginSubmitted ? 'Logging in...' : 'Log in' }}
+                  </b-button>
                 </b-form>
               </div>
             </b-tab>
 
             <b-tab title="Sign up">
-              <b-form @submit="onSignUpSubmit" v-if="show">
+              <b-form @submit="onSignUpSubmit">
                <b-form-group
                   id="input-group-0"
                   label-for="input-0"
@@ -61,6 +68,7 @@
                     type="text"
                     required
                     placeholder="Your first name here"
+                    :disabled="signupSubmitted"
                   ></b-form-input>
                 </b-form-group>
 
@@ -74,6 +82,7 @@
                     type="text"
                     required
                     placeholder="Your last name here"
+                    :disabled="signupSubmitted"
                   ></b-form-input>
                 </b-form-group>
 
@@ -87,6 +96,7 @@
                     type="email"
                     required
                     placeholder="Email address"
+                    :disabled="signupSubmitted"
                   ></b-form-input>
                 </b-form-group>
 
@@ -97,10 +107,16 @@
                     type="password"
                     required
                     placeholder="Password"
+                    :disabled="signupSubmitted"
                   ></b-form-input>
                 </b-form-group>
 
-                <b-button type="submit" variant="primary">Sign up</b-button>
+                <b-button
+                  type="submit"
+                  variant="primary"
+                  :disabled="signupSubmitted"
+                >{{ this.signupSubmitted ? 'Signing up...' : 'Sign up' }}
+                </b-button>
               </b-form>
             </b-tab>
           </b-tabs>
@@ -117,9 +133,6 @@ import store from '../store'
 
 export default {
   name: 'LoginSignup',
-  // components: {
-  //   NotesList
-  // }
   methods: {
     ...mapActions([
       'storeAuthToken',
@@ -128,20 +141,17 @@ export default {
     ]),
     onLoginSubmit (evt) {
       evt.preventDefault()
+      this.loginSubmitted = true
       this.showWarn = false
       this.loginForm.timeStamp = new Date()
       this.postLogin({
         userName: this.loginForm.userName,
         password: this.loginForm.password
       })
-      this.loginForm = {
-        userName: '',
-        password: '',
-        timeStamp: null
-      }
     },
     onSignUpSubmit (evt) {
       evt.preventDefault()
+      this.signupSubmitted = true
       this.showWarn = false
       this.signUpForm.timeStamp = new Date()
       this.postSignUp({
@@ -169,12 +179,13 @@ export default {
             store.dispatch('setLoggedIn', { loggedIn: true })
             this.$router.push({ path: '/me' })
           } else if (response.data.msg && response.data.msg === 'userOrPasswordIncorrect') {
+            this.loginSubmitted = false
             this.warningMessage = 'The email address and/or password you entered was incorrect, please try again.'
             this.showWarn = true
-            this.$router.push({ path: '/login-signup', query: { error: response.data.msg } })
           }
         })
         .catch(error => {
+          this.loginSubmitted = false
           console.error(error)
           // this.errored = true
         })
@@ -192,12 +203,13 @@ export default {
             store.dispatch('setLoggedIn', { loggedIn: true })
             this.$router.push({ path: '/me', query: { registered: 'true' } })
           } else if (response.data.msg && response.data.msg === 'userAlreadyExists') {
+            this.signupSubmitted = false
             this.warningMessage = `A user with ${data.userName} cannot be registered, please try again with a different user name.`
             this.showWarn = true
-            this.$router.push({ path: '/login-signup', query: { error: response.data.msg } })
           }
         })
         .catch(error => {
+          this.signupSubmitted = false
           console.error(error)
           // this.errored = true
         })
@@ -222,7 +234,8 @@ export default {
         password: '',
         timeStamp: null
       },
-      show: true
+      signupSubmitted: false,
+      loginSubmitted: false
     }
   }
 }
