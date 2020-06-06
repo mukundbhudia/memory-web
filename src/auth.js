@@ -12,7 +12,7 @@ export default {
     axios
       .get(`${store.state.apiEndpoint}/me`, {
         headers:
-          { Authorization: `Basic ${store.getters.getAuthToken}` }
+          { 'x-access-token': store.getters.getAuthToken }
       })
       .then(response => {
         output.info = response.data.msg
