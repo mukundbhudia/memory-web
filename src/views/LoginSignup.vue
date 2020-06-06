@@ -161,7 +161,7 @@ export default {
     },
     postLogin (data) {
       axios
-        .post(`${this.URI}/login`, data)
+        .post(`${this.API_URI}/auth/login`, data)
         .then(response => {
           if (response.data.msg && response.data.msg === 'loggedIn') {
             store.dispatch('storeAuthToken', { authToken: response.data.token })
@@ -184,7 +184,7 @@ export default {
     },
     postSignUp (data) {
       axios
-        .post(`${this.URI}/signup`, data)
+        .post(`${this.API_URI}/auth/signup`, data)
         .then(response => {
           if (response.data.msg && response.data.msg === 'userRegistered') {
             store.dispatch('storeAuthToken', { authToken: response.data.token })
@@ -210,7 +210,7 @@ export default {
     return {
       showWarn: false,
       warningMessage: '',
-      URI: this.$store.state.apiEndpoint,
+      API_URI: this.$store.state.apiEndpoint,
       loginForm: {
         userName: '',
         password: '',

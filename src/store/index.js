@@ -13,7 +13,7 @@ const emptyUserObject = {
 
 export default new Vuex.Store({
   state: {
-    apiEndpoint: process.env.VUE_APP_URI || 'http://localhost:4000',
+    apiEndpoint: process.env.VUE_APP_API_URI || 'http://localhost:4000',
     user: emptyUserObject,
     loggedIn: false,
     coords: { lat: 51.505, lng: -0.09 },

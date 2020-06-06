@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "predeploy": "VUE_APP_URI=https://memory-api.herokuapp.com NODE_ENV=live npm run build && cp dist/index.html dist/404.html",
+    "predeploy": "VUE_APP_API_URI=https://memory-api.herokuapp.com NODE_ENV=live npm run build && cp dist/index.html dist/404.html",
     "webdeploy": "webdeploy/deploy.sh"
   },
   "dependencies": {
