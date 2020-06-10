@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-  <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
   <main role="main" class="flex-shrink-0">
     <div class="container">
         <b-alert
